@@ -1,4 +1,4 @@
-package dev.abhi.userservice.userservice.services;
+package dev.abhi.userservice.userservice.utils;
 
 import dev.abhi.userservice.userservice.models.SessionStatus;
 import dev.abhi.userservice.userservice.models.User;

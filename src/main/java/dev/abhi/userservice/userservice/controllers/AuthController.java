@@ -18,7 +18,7 @@ import java.util.HashMap;
 @RequestMapping("/auth")
 public class AuthController {
 
-    private AuthService authService ;
+    private final AuthService authService ;
 
     public AuthController(AuthService authService){
         this.authService = authService ;
@@ -72,7 +72,6 @@ public class AuthController {
         TokenRequestDto requestDto = httpEntity.getBody() ;
         assert requestDto != null;
         System.out.println("auth token : " + requestDto.getAuthToken());
-
         System.out.println("http headers : " + httpEntity.getHeaders());
 
         return new ResponseEntity<SessionStatus>(authService.validateToken(requestDto.getAuthToken(),userId) ,HttpStatus.OK);

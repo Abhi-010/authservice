@@ -9,25 +9,18 @@ import dev.abhi.userservice.userservice.models.User;
 import dev.abhi.userservice.userservice.repo.SessionRepository;
 import dev.abhi.userservice.userservice.repo.UserRepository;
 import dev.abhi.userservice.userservice.dtos.UserResponseDto;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.MacAlgorithm;
-import org.apache.commons.lang3.RandomStringUtils;
+import dev.abhi.userservice.userservice.utils.JwtUtil;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.crypto.SecretKey;
-import java.nio.charset.StandardCharsets;
-import java.time.LocalDate;
 import java.util.*;
 
 @Service
 public class AuthService {
 
-   private UserRepository userRepository ;
-   private SessionRepository sessionRepository ;
-   private BCryptPasswordEncoder bCryptPasswordEncoder ;
+   private final UserRepository userRepository ;
+   private final SessionRepository sessionRepository ;
+   private final BCryptPasswordEncoder bCryptPasswordEncoder ;
    private JwtUtil jwtUtil ;
 
    public AuthService(UserRepository userRepository
