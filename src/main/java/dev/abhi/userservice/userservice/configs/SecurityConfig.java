@@ -22,6 +22,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.oidc.OidcScopes;
@@ -41,6 +42,11 @@ import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+	private final BCryptPasswordEncoder bCryptPasswordEncoder;
+	public SecurityConfig(BCryptPasswordEncoder bCryptPasswordEncoder){
+		this.bCryptPasswordEncoder = bCryptPasswordEncoder ;
+	}
 
 	@Bean
 	@Order(1)
@@ -76,8 +82,9 @@ public class SecurityConfig {
 	public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http)
 			throws Exception {
 		http
-			.authorizeHttpRequests((authorize) -> authorize
-				.anyRequest().authenticated()
+				.csrf(csrf -> csrf.disable())
+				.authorizeHttpRequests( (authorize) -> authorize
+						.requestMatchers("/auth/signup","/auth/login").permitAll()
 			)
 			// Form login handles the redirect to the login page from the
 			// authorization server filter chain
@@ -86,32 +93,35 @@ public class SecurityConfig {
 		return http.build();
 	}
 
-	@Bean
-	public UserDetailsService userDetailsService() {
-		UserDetails userDetails = User.withDefaultPasswordEncoder()
-				.username("user")
-				.password("password")
-				.roles("USER")
-				.build();
-
-		return new InMemoryUserDetailsManager(userDetails);
-	}
+//	@Bean
+//	public UserDetailsService userDetailsService() {
+//		UserDetails userDetails = User.withDefaultPasswordEncoder()
+//				.username("user")
+//				.password("password")
+//				.roles("USER")
+//				.build();
+//
+//		return new InMemoryUserDetailsManager(userDetails);
+//	}
 
 	@Bean
 	public RegisteredClientRepository registeredClientRepository() {
 		RegisteredClient oidcClient = RegisteredClient.withId(UUID.randomUUID().toString())
-				.clientId("oidc-client")
-				.clientSecret("{noop}secret")
+				.clientId("productservice")
+				.clientSecret(bCryptPasswordEncoder.encode("passwordforproductservice"))
 				.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
 				.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
 				.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+				.authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
 				.redirectUri("http://127.0.0.1:8080/login/oauth2/code/oidc-client")
+				.redirectUri("https://oauth.pstmn.io/v1/callback")
 				.postLogoutRedirectUri("http://127.0.0.1:8080/")
+				//.redirectUri("http://127.0.0.1:8080/login/oauth2/code/oidc-client")
+				//.postLogoutRedirectUri("http://127.0.0.1:8080/")
 				.scope(OidcScopes.OPENID)
 				.scope(OidcScopes.PROFILE)
 				.clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
 				.build();
-
 		return new InMemoryRegisteredClientRepository(oidcClient);
 	}
 
@@ -150,23 +160,4 @@ public class SecurityConfig {
 	public AuthorizationServerSettings authorizationServerSettings() {
 		return AuthorizationServerSettings.builder().build();
 	}
-
-	@Bean // this annotation will create an object of class SecurityFilterChain
-	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		http
-				.authorizeHttpRequests(
-						(requests) -> {
-							try {
-								requests
-										.anyRequest().permitAll()
-										.and().cors().disable()
-										.csrf().disable();
-							} catch (Exception e) {
-								throw new RuntimeException(e);
-							}
-						}
-				);
-		return http.build();
-	}
-
 }
