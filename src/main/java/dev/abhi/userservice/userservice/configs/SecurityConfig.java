@@ -84,7 +84,8 @@ public class SecurityConfig {
 		http
 				.csrf(csrf -> csrf.disable())
 				.authorizeHttpRequests( (authorize) -> authorize
-						.requestMatchers("/auth/signup","/auth/login").permitAll()
+						.anyRequest().permitAll()
+						//.requestMatchers("/auth/signup","/auth/login","/auth/roles").permitAll()
 			)
 			// Form login handles the redirect to the login page from the
 			// authorization server filter chain

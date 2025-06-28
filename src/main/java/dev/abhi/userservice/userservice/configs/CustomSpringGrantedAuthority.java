@@ -23,6 +23,6 @@ public class CustomSpringGrantedAuthority implements GrantedAuthority {
     @Override
     @JsonIgnore
     public String getAuthority() {
-        return role.getRole() ;
+        return role.getRoleName() ;
     }
 }

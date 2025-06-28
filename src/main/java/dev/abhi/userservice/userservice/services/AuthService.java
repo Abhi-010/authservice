@@ -1,11 +1,13 @@
 package dev.abhi.userservice.userservice.services;
 
+import dev.abhi.userservice.userservice.configs.AuthProperties;
 import dev.abhi.userservice.userservice.dtos.LoginResponseDto;
 import dev.abhi.userservice.userservice.dtos.LogoutResponseDto;
 import dev.abhi.userservice.userservice.models.Role;
 import dev.abhi.userservice.userservice.models.Session;
 import dev.abhi.userservice.userservice.models.SessionStatus;
 import dev.abhi.userservice.userservice.models.User;
+import dev.abhi.userservice.userservice.repo.RoleRepository;
 import dev.abhi.userservice.userservice.repo.SessionRepository;
 import dev.abhi.userservice.userservice.repo.UserRepository;
 import dev.abhi.userservice.userservice.dtos.UserResponseDto;
@@ -21,17 +23,23 @@ public class AuthService {
    private final UserRepository userRepository ;
    private final SessionRepository sessionRepository ;
    private final BCryptPasswordEncoder bCryptPasswordEncoder ;
-   private JwtUtil jwtUtil ;
+   private final JwtUtil jwtUtil ;
+
+   private final AuthProperties authProperties ;
+   private final RoleRepository roleRepository ;
 
    public AuthService(UserRepository userRepository
            ,SessionRepository sessionRepository
            ,BCryptPasswordEncoder bCryptPasswordEncoder
-           ,JwtUtil jwtUtil)
+           ,JwtUtil jwtUtil, AuthProperties authProperties
+           ,RoleRepository roleRepository)
    {
        this.sessionRepository = sessionRepository ;
        this.userRepository = userRepository ;
        this.bCryptPasswordEncoder = bCryptPasswordEncoder ;
        this.jwtUtil = jwtUtil ;
+       this.authProperties = authProperties ;
+       this.roleRepository = roleRepository ;
    }
 
    public UserResponseDto signUp(String name, String email, String password){
@@ -41,9 +49,10 @@ public class AuthService {
        //bCryptPasswordEncoder.encode(password)
        //newUser.setPassword(password);
        newUser.setPassword(bCryptPasswordEncoder.encode(password));
-       Role role = new Role() ;
-       role.setRole("Mentor");
-       role.setRole("ta");
+       String defaultRole = authProperties.getDefaultRole();
+       Role role = roleRepository.findRoleByRoleName(defaultRole)
+               .orElseThrow(()-> new RuntimeException("Default Role not found in DB"));
+
        List<Role> list = new ArrayList<>();
        list.add(role);
        newUser.setRoles(list);

@@ -1,0 +1,17 @@
+{
+  "groups": [
+    {
+      "name": "app.auth",
+      "type": "dev.abhi.userservice.userservice.configs.AuthProperties",
+      "sourceType": "dev.abhi.userservice.userservice.configs.AuthProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "app.auth.default-role",
+      "type": "java.lang.String",
+      "sourceType": "dev.abhi.userservice.userservice.configs.AuthProperties"
+    }
+  ],
+  "hints": []
+}

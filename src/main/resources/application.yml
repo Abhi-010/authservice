@@ -1,0 +1,3 @@
+app:
+  auth:
+    default-role : ROLE_USER

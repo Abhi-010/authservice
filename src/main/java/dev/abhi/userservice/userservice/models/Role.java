@@ -10,18 +10,18 @@ import java.util.Objects;
 @Setter
 @Entity
 public class Role extends BaseModel{
-    private String role ;
+    private String roleName;
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
         Role role1 = (Role) o;
-        return Objects.equals(getRole(), role1.getRole());
+        return Objects.equals(getRoleName(), role1.getRoleName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(getRole());
+        return Objects.hashCode(getRoleName());
     }
 }

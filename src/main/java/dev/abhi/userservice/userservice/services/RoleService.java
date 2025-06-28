@@ -2,14 +2,11 @@ package dev.abhi.userservice.userservice.services;
 
 import dev.abhi.userservice.userservice.dtos.RoleDto;
 import dev.abhi.userservice.userservice.models.Role;
-import dev.abhi.userservice.userservice.models.User;
 import dev.abhi.userservice.userservice.repo.RoleRepository;
-import dev.abhi.userservice.userservice.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class RoleService {
@@ -25,7 +22,7 @@ public class RoleService {
         int numberOfRoles = set.size() ;
 
         Role newRole = new Role() ;
-        newRole.setRole(name);
+        newRole.setRoleName(name);
 
         set.add(newRole);
         if(set.size() == numberOfRoles){
@@ -34,7 +31,7 @@ public class RoleService {
 
         Role savedRole = roleRepository.save(newRole);
         RoleDto roleDto = new RoleDto() ;
-        roleDto.setName(savedRole.getRole());
+        roleDto.setName(savedRole.getRoleName());
         return roleDto ;
 
     }
