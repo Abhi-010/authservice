@@ -1,8 +1,11 @@
 package dev.abhi.userservice.userservice.controllers;
 
 
+import dev.abhi.userservice.userservice.dtos.AddRoleToUserRequestDto;
 import dev.abhi.userservice.userservice.dtos.CreateRoleRequestDto;
 import dev.abhi.userservice.userservice.dtos.RoleDto;
+import dev.abhi.userservice.userservice.dtos.UserResponseDto;
+import dev.abhi.userservice.userservice.models.User;
 import dev.abhi.userservice.userservice.services.AuthService;
 import dev.abhi.userservice.userservice.services.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,5 +29,11 @@ public class RoleController {
         RoleDto roleDto = roleService.createRole(createRoleRequestDto.getName());
 
         return new ResponseEntity<>(roleDto, HttpStatus.OK) ;
+    }
+
+    @PostMapping("/add-role-user")
+    public ResponseEntity<UserResponseDto> addRoleToUser(@RequestBody AddRoleToUserRequestDto addRoleToUserRequestDto){
+        UserResponseDto userResponseDto = roleService.addRoleToUser(addRoleToUserRequestDto.getUserId(),addRoleToUserRequestDto.getRoleName()) ;
+        return new ResponseEntity<>(userResponseDto,HttpStatus.OK) ;
     }
 }
