@@ -19,7 +19,6 @@ import java.util.List;
 @JsonDeserialize(as = CustomSpringUserDetail.class)
 @NoArgsConstructor
 public class CustomSpringUserDetail implements UserDetails {
-
     private User user ;
     public CustomSpringUserDetail(User user){
         this.user = user ;
