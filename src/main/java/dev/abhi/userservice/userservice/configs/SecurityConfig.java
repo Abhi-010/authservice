@@ -64,6 +64,7 @@ public class SecurityConfig {
 			.authorizeHttpRequests((authorize) ->
 				authorize
 					.anyRequest().authenticated()
+					//	.requestMatchers("/auth/signup","/auth/login","/auth/roles").permitAll()
 			)
 			// Redirect to the login page when not authenticated from the
 			// authorization endpoint
@@ -84,8 +85,8 @@ public class SecurityConfig {
 		http
 				.csrf(csrf -> csrf.disable())
 				.authorizeHttpRequests( (authorize) -> authorize
-						.anyRequest().authenticated()
-						//.requestMatchers("/auth/signup","/auth/login","/auth/roles").permitAll()
+						//.anyRequest().authenticated()
+						.requestMatchers("/auth/signup","/auth/login","/auth/roles").permitAll()
 			)
 			// Form login handles the redirect to the login page from the
 			// authorization server filter chain
