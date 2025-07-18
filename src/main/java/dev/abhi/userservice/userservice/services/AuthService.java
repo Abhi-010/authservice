@@ -12,6 +12,7 @@ import dev.abhi.userservice.userservice.repo.SessionRepository;
 import dev.abhi.userservice.userservice.repo.UserRepository;
 import dev.abhi.userservice.userservice.dtos.UserResponseDto;
 import dev.abhi.userservice.userservice.utils.JwtUtil;
+import exceptions.DefaultRoleNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -42,7 +43,7 @@ public class AuthService {
        this.roleRepository = roleRepository ;
    }
 
-   public UserResponseDto signUp(String name, String email, String password){
+   public UserResponseDto signUp(String name, String email, String password) throws DefaultRoleNotFoundException {
        User newUser = new User() ;
        newUser.setName(name);
        newUser.setEmail(email);
@@ -51,7 +52,7 @@ public class AuthService {
        newUser.setPassword(bCryptPasswordEncoder.encode(password));
        String defaultRole = authProperties.getDefaultRole();
        Role role = roleRepository.findRoleByRoleName(defaultRole)
-               .orElseThrow(()-> new RuntimeException("Default Role not found in DB"));
+               .orElseThrow(()-> new DefaultRoleNotFoundException("Default Role not found in DB"));
 
        List<Role> list = new ArrayList<>();
        list.add(role);

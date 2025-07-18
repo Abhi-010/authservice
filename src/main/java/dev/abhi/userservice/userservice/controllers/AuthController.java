@@ -3,6 +3,7 @@ import dev.abhi.userservice.userservice.dtos.*;
 import dev.abhi.userservice.userservice.models.Session;
 import dev.abhi.userservice.userservice.models.SessionStatus;
 import dev.abhi.userservice.userservice.services.AuthService;
+import exceptions.DefaultRoleNotFoundException;
 import lombok.Getter;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -11,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.MultiValueMapAdapter;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
 
@@ -27,10 +29,18 @@ public class AuthController {
     /**1.Sign Up **/
 
     @PostMapping("/signup")
-    public ResponseEntity<UserResponseDto> signUp(@RequestBody SignUpRequestDto signUpRequestDto){
+    public ResponseEntity<UserResponseDto> signUp(@RequestBody SignUpRequestDto signUpRequestDto) {
+        //try {
+
         UserResponseDto userResponseDto =
                 authService.signUp(signUpRequestDto.getName(), signUpRequestDto.getEmail(), signUpRequestDto.getPassword());
-        return new ResponseEntity<>(userResponseDto, HttpStatus.OK) ;
+        return new ResponseEntity<>(userResponseDto, HttpStatus.OK);
+
+         //}
+//        catch (DefaultRoleNotFoundException notFoundException){
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+//                   "Default Role not exist in DB", notFoundException);
+//        }
     }
 
     /**2.login **/

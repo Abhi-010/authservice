@@ -12,6 +12,7 @@ import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -65,7 +66,7 @@ public class SecurityConfig {
 				authorize
 					.anyRequest().authenticated()
 					//	.requestMatchers("/auth/signup","/auth/login","/auth/roles").permitAll()
-			)
+			).csrf(csrf -> csrf.disable())
 			// Redirect to the login page when not authenticated from the
 			// authorization endpoint
 			.exceptionHandling((exceptions) -> exceptions
@@ -88,6 +89,18 @@ public class SecurityConfig {
 						//.anyRequest().authenticated()
 						.requestMatchers("/auth/signup","/auth/login","/auth/roles").permitAll()
 			)
+				.exceptionHandling(exception -> exception
+						.authenticationEntryPoint((request, response, authException) -> {
+							response.setContentType("application/json");
+							response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+							response.getWriter().write("{\"error\": \"Unauthorized access\"}");
+						})
+						.accessDeniedHandler((request, response, accessDeniedException) -> {
+							response.setContentType("application/json");
+							response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+							response.getWriter().write("{\"error\": \"Access Denied\"}");
+						})
+				)
 			// Form login handles the redirect to the login page from the
 			// authorization server filter chain
 			.formLogin(Customizer.withDefaults());
