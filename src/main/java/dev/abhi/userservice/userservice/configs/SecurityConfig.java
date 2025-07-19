@@ -87,20 +87,20 @@ public class SecurityConfig {
 				.csrf(csrf -> csrf.disable())
 				.authorizeHttpRequests( (authorize) -> authorize
 						//.anyRequest().authenticated()
-						.requestMatchers("/auth/signup","/auth/login","/auth/roles").permitAll()
+						.requestMatchers("/auth/signup","/auth/roles").permitAll()
 			)
-				.exceptionHandling(exception -> exception
-						.authenticationEntryPoint((request, response, authException) -> {
-							response.setContentType("application/json");
-							response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-							response.getWriter().write("{\"error\": \"Unauthorized access\"}");
-						})
-						.accessDeniedHandler((request, response, accessDeniedException) -> {
-							response.setContentType("application/json");
-							response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-							response.getWriter().write("{\"error\": \"Access Denied\"}");
-						})
-				)
+//				.exceptionHandling(exception -> exception
+//						.authenticationEntryPoint((request, response, authException) -> {
+//							response.setContentType("application/json");
+//							response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+//							response.getWriter().write("{\"error\": \"Unauthorized access\"}");
+//						})
+//						.accessDeniedHandler((request, response, accessDeniedException) -> {
+//							response.setContentType("application/json");
+//							response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+//							response.getWriter().write("{\"error\": \"Access Denied\"}");
+//						})
+//				)
 			// Form login handles the redirect to the login page from the
 			// authorization server filter chain
 			.formLogin(Customizer.withDefaults());
