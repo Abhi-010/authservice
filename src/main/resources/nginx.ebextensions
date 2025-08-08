@@ -1,0 +1,6 @@
+# .ebextensions/01_port.config
+option_settings:
+  aws:elasticbeanstalk:environment:proxy:
+    ProxyServer: nginx
+  aws:elasticbeanstalk:application:environment:
+    SERVER_PORT: 8081

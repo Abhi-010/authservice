@@ -47,3 +47,5 @@ D:\E-Commerce_31Aug2025\userservice\userservice\src\main\java\dev\abhi\userservi
 D:\E-Commerce_31Aug2025\userservice\userservice\src\main\java\dev\abhi\userservice\userservice\services\UserService.java
 D:\E-Commerce_31Aug2025\userservice\userservice\src\main\java\dev\abhi\userservice\userservice\UserserviceApplication.java
 D:\E-Commerce_31Aug2025\userservice\userservice\src\main\java\dev\abhi\userservice\userservice\utils\JwtUtil.java
+D:\E-Commerce_31Aug2025\userservice\userservice\src\main\java\exceptions\DefaultRoleNotFoundException.java
+D:\E-Commerce_31Aug2025\userservice\userservice\src\main\java\exceptions\GlobalException.java

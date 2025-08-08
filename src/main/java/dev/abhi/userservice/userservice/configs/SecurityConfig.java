@@ -88,6 +88,7 @@ public class SecurityConfig {
 				.authorizeHttpRequests( (authorize) -> authorize
 						//.anyRequest().authenticated()
 						.requestMatchers("/auth/signup","/auth/roles").permitAll()
+						.requestMatchers("/actuator/**").permitAll()
 			)
 //				.exceptionHandling(exception -> exception
 //						.authenticationEntryPoint((request, response, authException) -> {

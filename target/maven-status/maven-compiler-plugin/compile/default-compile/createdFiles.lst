@@ -16,6 +16,7 @@ dev\abhi\userservice\userservice\configs\CustomSpringGrantedAuthority.class
 dev\abhi\userservice\userservice\dtos\SignUpRequestDto.class
 dev\abhi\userservice\userservice\configs\SecurityConfig.class
 dev\abhi\userservice\userservice\configs\CustomSpringUserDetail.class
+exceptions\DefaultRoleNotFoundException.class
 dev\abhi\userservice\userservice\configs\models\Authorization.class
 dev\abhi\userservice\userservice\configs\models\AuthorizationConsent$AuthorizationConsentId.class
 dev\abhi\userservice\userservice\configs\repo\AuthorizationRepository.class
@@ -51,3 +52,4 @@ dev\abhi\userservice\userservice\configs\EncoderConfig.class
 dev\abhi\userservice\userservice\configs\models\AuthorizationConsent.class
 dev\abhi\userservice\userservice\dtos\LoginRequestDto.class
 dev\abhi\userservice\userservice\dtos\CreateRoleRequestDto.class
+exceptions\GlobalException.class
